@@ -1,3 +1,3 @@
-# Sample Web Application  
+# Elastic Search Web App  
 
-Web application written in Python using `flask` and deployed on Heroku. Detailed tutorial of the code in this repository can be found [here](https://towardsdatascience.com/create-and-deploy-a-simple-web-application-with-flask-and-heroku-103d867298eb).
+Web application written in Python using `flask` and deployed on Heroku. Initial setup for this code was copied from [here](https://towardsdatascience.com/create-and-deploy-a-simple-web-application-with-flask-and-heroku-103d867298eb).
