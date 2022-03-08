@@ -1,25 +1,29 @@
-from flask import Flask, render_template
+import json
+import requests
+from flask import Flask, render_template, jsonify
+from elasticsearch import Elasticsearch, helpers
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
-    
-    # Load current count
-    f = open("count.txt", "r")
-    count = int(f.read())
-    f.close()
+    cloud_id = "https://info624project.es.us-central1.gcp.cloud.es.io:9243/"
+    user = "elastic"
+    password = "E8ESWK45BvcnmYFrCmF7MNdW"
 
-    # Increment the count
-    count += 1
+    es = Elasticsearch(
+        hosts=cloud_id,
+        basic_auth=(user, password)
+    )
 
-    # Overwrite the count
-    f = open("count.txt", "w")
-    f.write(str(count))
-    f.close()
+    elastiSearchInfo = es.info()
+    print(elastiSearchInfo)
+    json_data = elastiSearchInfo['cluster_name']
+    cluster_name = json_data
 
     # Render HTML with count variable
-    return render_template("index.html", count=count)
+    return render_template("index.html", cluster_name=cluster_name)
 
 if __name__ == "__main__":
     app.run()
