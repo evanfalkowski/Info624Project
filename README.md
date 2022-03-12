@@ -4,7 +4,7 @@ Web application written in Python using `flask` and deployed on Heroku. Initial 
 
 
 Data Site:
-https://developer.weatherunlocked.com/documentation/skiresort/
+https://www.worldweatheronline.com/developer/premium-api-explorer.aspx
 
 ElasticSearch Site:
 https://info624project.kb.us-central1.gcp.cloud.es.io:9243/app/enterprise_search/app_search/engines/info624
