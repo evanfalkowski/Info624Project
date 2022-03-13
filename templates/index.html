@@ -22,6 +22,19 @@
 </style>
 
 <div>
-    <h1>Welcome!</h1><br>
-    <p>You are currently connected to the Elastic Search Cluster: {{ cluster_name }} </p>
+    <div>
+        <h1>Welcome!</h1><br>
+        <h2>A Project by: Tyler Beard, Evan Falkowski, and Joseph Lee</h2>
+        <h3>You are currently connected to the Elastic Search Cluster: {{ cluster_name }} </h3>
+    </div>
+    <div>
+        <h4>This search engine will allow you to query ski resorts/mountains based on:
+            <ul>
+                <li>the current and projected snowfall</li>
+                <li>the state</li>
+                <li>the current temperature</li>
+            </ul>
+        </h4>
+    </div>
+    <a href="{{ url_for('search_page') }}">Go to Mountain Search</a>
 </div>

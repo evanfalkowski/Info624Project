@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search Page</title>
+</head>
+<body>
+   <form method="post">
+        <label for="title">Title</label>
+        <br>
+        <input type="text" name="ski_query"
+               placeholder="Query The Mountains"
+               value="{{ request.form['ski_query'] }}"></input>
+        <button type="submit">Submit</button>
+   </form>
+</body>
+</html>
