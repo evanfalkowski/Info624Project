@@ -10,7 +10,35 @@
         <input type="text" name="ski_query"
                placeholder="Query The Mountains"
                value="{{ request.form['ski_query'] }}"></input>
+        <select name="selected_state" class="Input">
+            {% for state in states %}
+              <option value="{{state}}" >{{state}}</option>
+            {% endfor %}
+        </select>
+
+        <label> Minimum snowfall range</label>
+        <input id="input_slider_min" type="range" min="0" max="" name="snowfall_slider_min" oninput="updateSnowValue_min(value)"/>
+
+        <label> Maximum snowfall range</label>
+        <input id="input_slider_max" type="range" min="0" max="100" name="snowfall_slider_max" oninput="updateSnowValue_max(value)"/>
+
+        <p>Chosen Snowfall in upcoming 24 hours in mm between:<span id="slider_amount_min"></span> - <span id="slider_amount_max"></span></p>
+
+
+
         <button type="submit">Submit</button>
    </form>
 </body>
 </html>
+<script>
+function updateSnowValue_min(amount) {
+     document.querySelector('#slider_amount_min').innerHTML = amount;
+     document.getElementById('input_slider_max').min = amount
+}
+
+function updateSnowValue_max(amount) {
+    document.querySelector('#slider_amount_max').innerHTML = amount;
+    document.getElementById('input_slider_min').max = amount
+}
+
+</script>
