@@ -19,8 +19,6 @@ engine_name = "info624-skisearch"
 states = ["", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 
 
-#id, data, state, snowfall
-
 @app.route("/")
 def index():
     elastiSearchInfo = es.info()
@@ -47,13 +45,6 @@ def search_page():
         #enterprise-search-engine-info624-skisearch
 
         #gets all the docs
-        # result = es.search(
-        #         index='enterprise-search-engine-info624-skisearch',
-        #         query={
-        #             'match_all': {}
-        #         }
-        #     )
-
         # {
         #     "query": {
         #         "bool": {
@@ -90,70 +81,12 @@ def search_page():
 
         result = es.search(
             index='enterprise-search-engine-info624-skisearch',
-            query={
-                "match": {
-                    "content": "dog"
-                }
-            }
+            query=built_query
         )
 
-
-        # print(result['hits']['hits'])
-        all_docs = {}
+        all_docs = result['hits']['hits']
 
         return render_template('results.html', all_docs=all_docs)
-
-        # query = request.form['ski_query']
-        #
-        # if not query:
-        #     flash('Please Enter a query')
-        # else:
-        #     result = es.search(
-        #         index='lord-of-the-rings',
-        #         query={
-        #             'match': {'quote': 'late'}
-        #         }
-        #     )
-        #
-        #     result['hits']['hits']
-            # all_docs = {}
-            # all_indices = es.indices.get_alias("*")
-            #
-            # # iterate over the index names
-            # for ind in all_indices:
-            #
-            #     # skip hidden indices with '.' in name
-            #     if "." not in ind[:1]:
-            #         # nest another dictionary for index inside
-            #         all_docs[ind] = {}
-            #
-            #         # print the index name
-            #         print("\nindex:", ind)
-            #
-            #         # get 20 of the Elasticsearch documents from index
-            #         docs = es.search(
-            #             from_=0,  # for pagination
-            #             index=ind,
-            #             body={
-            #                 'size': 10,
-            #                 'query': {
-            #                     # pass query paramater
-            #                     'match_all': query
-            #                 }
-            #             })
-            #
-            #         # get just the doc "hits"
-            #         docs = docs["hits"]["hits"]
-            #
-            #         # print the list of docs
-            #         print("index:", ind, "has", len(docs), "num of docs.")
-            #
-            #         # put the list of docs into a dict key
-            #         all_docs[ind]["docs"] = docs
-
-            #return redirect(url_for('results'))
-
-   # return render_template('search_page.html')
 
 
 @app.route('/results')
