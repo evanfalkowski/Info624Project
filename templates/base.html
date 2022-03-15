@@ -8,6 +8,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+  <script context="module">
+	export const prerender = false;
+  </script>
     <meta charset="UTF-8">
   <title>{% block title %}{% endblock %} - Info624</title>
   {% block html_head %}{% endblock %}
@@ -16,7 +19,7 @@
   <header class="topnav">
     <a class="active" href="/">Home</a>
     <span> | </span>
-    <a href="search_page"> Search Mountains </a>
+    <a href="searchpage"> Search Mountains </a>
     <div class="pull-right">
      <span>A Project by: Tyler Beard, Evan Falkowski, and Joseph Lee</span>
     </div>

@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
 {% block content %}
+<script context="module">
+	export const prerender = false;
+</script>
 <div>
     <h3>
         Welcome To the Search page. Please enter free text you would like to search, the state you want the data from, and/or the snowfall range you want.
     </h3>
     <div>{{results}}</div>
-     <form method="post">
+     <form method="post" action="/searching">
         <div class="form-group">
             <div class="row">
                 <div class="col-md-6">
