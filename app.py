@@ -1,7 +1,8 @@
 import json
 import requests
-from flask import Flask, render_template,  request, url_for, flash, redirect, json
-from elasticsearch import Elasticsearch, helpers
+from flask import Flask, render_template,  request
+from elasticsearch import Elasticsearch
+from dataclasses import dataclass
 
 app = Flask(__name__)
 cloud_id = "https://info624project.es.us-central1.gcp.cloud.es.io:9243/"
