@@ -3,20 +3,40 @@
 {% block content %}
     <div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-2 pull-right">
                 <a href="{{ url_for('search_page') }}">Back to Search</a>
             </div>
         </div>
-        <div class="row">
+         <div class="row">
             <div class="col-md-12">
-                <ul>
-                {% for result in all_docs %}
-
-                        <li>{{ result }}</li>
-
-                {% endfor %}
-                </ul>
+                Search Results
             </div>
         </div>
+        <br>
+        {% for result in docs %}
+        <div class="row">
+            <div class="col-md-4">
+                Location : {{result.Location}}
+            </div>
+             <div class="col-md-3">
+                Weather : {{result.Weather}}
+            </div>
+             <div class="col-md-2">
+                Temp(f) : {{result.Temp}}
+            </div>
+            <div class="col-md-2">
+                Wind : {{result.Wind}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-4">
+                Snow Chance : {{result.SnowChance}}
+            </div>
+             <div class="col-md-3">
+                Snow Amount : {{result.SnowAmount}}
+            </div>
+        </div>
+        <br>
+         {% endfor %}
     </div>
 {% endblock %}

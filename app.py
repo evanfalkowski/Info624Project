@@ -14,8 +14,8 @@ es = Elasticsearch(
     basic_auth=(user, password)
 )
 results = []
-engine_name = "info624-skisearch"
-
+engine_name = "info-skiingweather"
+es_index = "enterprise-search-engine-info-skiingweather"
 states = ["", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 
 
@@ -42,51 +42,75 @@ def search_page():
         print(request.form['snowfall_slider_max'])
 
         #the name of the index
-        #enterprise-search-engine-info624-skisearch
-
-        #gets all the docs
-        # {
-        #     "query": {
-        #         "bool": {
-        #             "must": {
-        #                 "match_all": {}
-        #             },
-        #             "filter": {
-        #                 "term": {
-        #                     "status": "active"
-        #                 }
-        #             }
-        #         }
-        #     }
-        # }
+        #enterprise-search-engine-info-skiingweather
 
         #build the query
         built_query = {
-            "bool": {
+            "query": {
+                "bool": {
 
+                }
             }
+
         }
+        built_query["query"]["bool"]["must"] = []
 
         if request.form['ski_query'] != "":
-            built_query["bool"]["filter"] = {"term": {"data": request.form['ski_query']}}
+            built_query["query"]["bool"]["must"].append({"multi_match": {
+                  "query": request.form['ski_query'],
+                  "fields": [
+                    "query",
+                    "weather_desc",
+                    "query_type",
+                    "chance_of_snow",
+                    "totalsnowfall_cm"
+                  ]
+                }
+            })
 
         if request.form['selected_state'] != "":
-            built_query["bool"]["must"] = {"term": {"state": request.form['selected_state']}}
+            built_query["query"]["bool"]["must"].append({"term": {"query": request.form['selected_state']}})
 
-        if request.form['snowfall_slider_min'] != "":
-            built_query["bool"]["must"] = {"term": {"state": request.form['selected_state']}}
+        if request.form['snowfall_slider_min'] != "" and request.form['snowfall_slider_max'] != "":
+            # if "must" not in built_query["query"]["bool"].keys():
+            #     built_query["query"]["bool"]["must"] = []
 
-        if request.form['snowfall_slider_max'] != "":
-            built_query["bool"]["must"] = {"term": {"state": request.form['selected_state']}}
+            built_query["query"]["bool"]["must"].append({"range": {"totalsnowfall_cm": {"gte": request.form['snowfall_slider_min'], "lte": request.form['snowfall_slider_max']}}})
+
+        print(built_query)
 
         result = es.search(
-            index='enterprise-search-engine-info624-skisearch',
-            query=built_query
+            index=es_index,
+            body=built_query
         )
 
         all_docs = result['hits']['hits']
+        print(all_docs)
 
-        return render_template('results.html', all_docs=all_docs)
+        #convert the docs to html readable
+        # {'_index': '.ent-search-engine-documents-info-skiingweather', '_id': 'doc-622fc597bfd9d5740f933c13',
+        #  '_score': 3.1589372,
+        #  '_ignored': ['query_type.location', 'totalsnowfall_cm.location', 'totalsnowfall_cm.date', 'weather_desc.float',
+        #               'chance_of_snow.date', 'query_type.date', 'query.date', 'weather_desc.date',
+        #               'weather_desc.location', 'windspeed_mph.date', 'temp_f.date', 'query.location', 'query.float',
+        #               'query_type.float'],
+        #  '_source': {'query': 'Kirkwood,CA', 'query_type': 'City', 'weather_desc': 'Clear', 'chance_of_snow': '0',
+        #              'totalsnowfall_cm': '0.0', 'temp_f': '36', 'windspeed_mph': '6',
+        #              'id': 'doc-622fc597bfd9d5740f933c13'}}
+
+        formatted_docs = []
+        for doc in all_docs:
+            formatted_docs.append({
+                "Location": doc['_source']['query'],
+                "Weather": doc['_source']['weather_desc'],
+                "SnowChance": doc['_source']['chance_of_snow'],
+                "SnowAmount": doc['_source']['totalsnowfall_cm'],
+                "Temp": doc['_source']['temp_f'],
+                "Wind": doc['_source']['windspeed_mph'],
+                "Score": doc['_score']
+            })
+
+        return render_template('results.html', docs=formatted_docs)
 
 
 @app.route('/results')

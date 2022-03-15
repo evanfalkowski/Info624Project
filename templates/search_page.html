@@ -34,11 +34,11 @@
             <div class="row">
                 <div class="col-md-6">
                 <label  for="input_slider_min"> Minimum snowfall range</label>
-                <input id="input_slider_min" type="range" min="0" max="" name="snowfall_slider_min" oninput="updateSnowValue_min(value)"/>
+                <input id="input_slider_min" type="range" value="0" min="0" max="" name="snowfall_slider_min" oninput="updateSnowValue_min(value)"/>
             </div>
              <div class="col-md-6">
                 <label  for="input_slider_max"> Maximum snowfall range</label>
-                <input id="input_slider_max" type="range" min="0" max="100" name="snowfall_slider_max" oninput="updateSnowValue_max(value)"/>
+                <input id="input_slider_max" type="range" value="10" min="0" max="100" name="snowfall_slider_max" oninput="updateSnowValue_max(value)"/>
              </div>
             </div>
             <div class="row">
@@ -52,15 +52,23 @@
 </div>
 
 <script>
+
 function updateSnowValue_min(amount) {
      document.querySelector('#slider_amount_min').innerHTML = amount;
-     document.getElementById('input_slider_max').min = amount
+     document.getElementById('input_slider_max').min = amount;
 }
 
 function updateSnowValue_max(amount) {
     document.querySelector('#slider_amount_max').innerHTML = amount;
-    document.getElementById('input_slider_min').max = amount
+    document.getElementById('input_slider_min').max = amount;
 }
+
+function init(){
+    updateSnowValue_min(0);
+    updateSnowValue_max(10)
+}
+
+init();
 
 </script>
 {% endblock %}
