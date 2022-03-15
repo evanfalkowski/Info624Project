@@ -75,9 +75,6 @@ def search_page():
             built_query["query"]["bool"]["must"].append({"match": {"query": request.form['selected_state']}})
 
         if request.form['snowfall_slider_min'] != "" and request.form['snowfall_slider_max'] != "":
-            # if "must" not in built_query["query"]["bool"].keys():
-            #     built_query["query"]["bool"]["must"] = []
-
             built_query["query"]["bool"]["must"].append({"range": {"totalsnowfall_cm": {"gte": request.form['snowfall_slider_min'], "lte": request.form['snowfall_slider_max']}}})
 
 
