@@ -32,7 +32,8 @@ def index():
 @app.route('/search_page', methods=['GET', 'POST'])
 def search_page():
     if request.method == 'GET':
-        return render_template('search_page.html', states=states)
+        results = es.indices.get_alias("*")
+        return render_template('search_page.html', states=states, results=results)
 
     if request.method == 'POST':
 
