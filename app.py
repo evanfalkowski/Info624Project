@@ -17,7 +17,7 @@ es = Elasticsearch(
 results = []
 engine_name = "info-skiingweather"
 es_index = "enterprise-search-engine-info-skiingweather"
-states = ["", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+states = ['','AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']
 
 
 @app.route("/")
@@ -64,19 +64,22 @@ def search_page():
                     "weather_desc",
                     "query_type",
                     "chance_of_snow",
-                    "totalsnowfall_cm"
+                    "totalsnowfall_cm",
+                    "windspeed_mph",
+                    "temp_f"
                   ]
                 }
             })
 
         if request.form['selected_state'] != "":
-            built_query["query"]["bool"]["must"].append({"term": {"query": request.form['selected_state']}})
+            built_query["query"]["bool"]["must"].append({"match": {"query": request.form['selected_state']}})
 
         if request.form['snowfall_slider_min'] != "" and request.form['snowfall_slider_max'] != "":
             # if "must" not in built_query["query"]["bool"].keys():
             #     built_query["query"]["bool"]["must"] = []
 
             built_query["query"]["bool"]["must"].append({"range": {"totalsnowfall_cm": {"gte": request.form['snowfall_slider_min'], "lte": request.form['snowfall_slider_max']}}})
+
 
         print(built_query)
 
@@ -111,6 +114,7 @@ def search_page():
                 "Score": doc['_score']
             })
 
+        print(formatted_docs)
         return render_template('results.html', docs=formatted_docs)
 
 
