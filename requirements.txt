@@ -8,4 +8,3 @@ Werkzeug==1.0.1
 
 requests~=2.27.1
 elasticsearch~=8.1.0
-dataclasses~=0.6
